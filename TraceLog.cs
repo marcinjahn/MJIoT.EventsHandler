@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MJIoT_EventsFunction
+namespace MjIot.EventsHandler
 {
     class TraceLog
     {

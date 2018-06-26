@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MJIoT_DBModel;
+using MjIot.Storage.Models.EF6Db;
 using Newtonsoft.Json;
 
 using System.Data.Entity;
@@ -11,7 +11,7 @@ using System.Data.Entity;
 using Microsoft.Azure.Devices;
 
 
-namespace MJIoT_EventsFunction
+namespace MjIot.EventsHandler
 {
     class Program
     {
@@ -152,7 +152,7 @@ namespace MJIoT_EventsFunction
             Context.SaveChanges();
         }
 
-        public List<MJIoT_DBModel.Connection> GetConnections(int senderId)
+        public List<Connection> GetConnections(int senderId)
         {
             //var listeners = Context.Devices.Include("ListenerDevices")
             //        .Where(n => n.Id == senderId)

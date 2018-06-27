@@ -5,6 +5,9 @@ using MjIot.Storage.Models.EF6Db;
 using MJIot.Storage.Models;
 using System.Data.Entity;
 using System.Linq;
+using MjIot.EventsHandler.Models;
+using MjIot.EventsHandler.Services;
+using MjIot.EventsHandler.ValueModifiers;
 
 namespace MjIot.EventsHandler
 {

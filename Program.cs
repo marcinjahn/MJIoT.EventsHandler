@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MjIot.EventsHandler.Models;
+using System;
 using System.Text;
 
 

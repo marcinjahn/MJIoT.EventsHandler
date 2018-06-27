@@ -1,4 +1,4 @@
-﻿namespace MjIot.EventsHandler
+﻿namespace MjIot.EventsHandler.Models
 {
     public class IotMessage
     {

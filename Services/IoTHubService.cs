@@ -2,15 +2,10 @@
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Devices;
+using MjIot.EventsHandler.Models;
 
-
-namespace MjIot.EventsHandler
+namespace MjIot.EventsHandler.Services
 {
-    public interface IIotService
-    {
-        Task SendToListenerAsync(IotMessage message);
-        Task<Boolean> IsDeviceOnline(string deviceId);
-    }
 
     public class IoTHubService : IIotService
     {

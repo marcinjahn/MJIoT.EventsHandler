@@ -119,18 +119,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calculation.cs" />
+    <Compile Include="Services\IIotService.cs" />
+    <Compile Include="ValueModifiers\Calculation.cs" />
     <Compile Include="EventHandler.cs" />
-    <Compile Include="Filter.cs" />
-    <Compile Include="IoTHubMessage.cs" />
-    <Compile Include="IoTHubService.cs" />
-    <Compile Include="IValueModifier.cs" />
-    <Compile Include="MessageValidator.cs" />
+    <Compile Include="ValueModifiers\Filter.cs" />
+    <Compile Include="Models\IoTHubMessage.cs" />
+    <Compile Include="Services\IoTHubService.cs" />
+    <Compile Include="ValueModifiers\IValueModifier.cs" />
+    <Compile Include="Services\MessageValidator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyDataMessage.cs" />
+    <Compile Include="Models\PropertyDataMessage.cs" />
     <Compile Include="TraceLog.cs" />
-    <Compile Include="ValueFormatConverter.cs" />
+    <Compile Include="ValueModifiers\ValueFormatConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

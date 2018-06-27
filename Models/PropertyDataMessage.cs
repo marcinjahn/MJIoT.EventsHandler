@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 
-namespace MjIot.EventsHandler
+namespace MjIot.EventsHandler.Models
 {
     public class PropertyDataMessage
     {

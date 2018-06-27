@@ -1,7 +1,8 @@
 ﻿using System;
+using MjIot.EventsHandler.Models;
 using MjIot.Storage.Models.EF6Db;
 
-namespace MjIot.EventsHandler
+namespace MjIot.EventsHandler.Services
 {
     public static class MessageValidator
     {

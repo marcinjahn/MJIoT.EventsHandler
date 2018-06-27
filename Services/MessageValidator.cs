@@ -1,6 +1,6 @@
-﻿using System;
-using MjIot.EventsHandler.Models;
+﻿using MjIot.EventsHandler.Models;
 using MjIot.Storage.Models.EF6Db;
+using System;
 
 namespace MjIot.EventsHandler.Services
 {

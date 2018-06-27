@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-
 namespace MjIot.EventsHandler.Models
 {
     public class PropertyDataMessage
     {
         public PropertyDataMessage()
         {
-
         }
 
         public PropertyDataMessage(string message)

@@ -2,7 +2,7 @@
 {
     public class IotMessage
     {
-        public IotMessage(string receiverId, string propertyName,  string value)
+        public IotMessage(string receiverId, string propertyName, string value)
         {
             ReceiverId = receiverId;
             PropertyName = propertyName;

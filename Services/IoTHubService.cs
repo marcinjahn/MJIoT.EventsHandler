@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using Microsoft.Azure.Devices;
+﻿using Microsoft.Azure.Devices;
 using MjIot.EventsHandler.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace MjIot.EventsHandler.Services
 {
-
     public class IoTHubService : IIotService
     {
         public ServiceClient ServiceClient { get; set; }
@@ -50,6 +48,5 @@ namespace MjIot.EventsHandler.Services
         {
             return @"{""PropertyName"":""" + property + @""",""PropertyValue"":""" + value + @"""}";
         }
-
     }
 }

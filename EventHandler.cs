@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MjIot.Storage.Models.EF6Db;
-using MJIot.Storage.Models;
-using System.Data.Entity;
-using System.Linq;
-using MjIot.EventsHandler.Models;
+﻿using MjIot.EventsHandler.Models;
 using MjIot.EventsHandler.Services;
 using MjIot.EventsHandler.ValueModifiers;
+using MjIot.Storage.Models.EF6Db;
+using MJIot.Storage.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MjIot.EventsHandler
 {
-
     public class EventHandler
     {
         private IoTHubService _iotHubService { get; set; }
@@ -22,7 +20,6 @@ namespace MjIot.EventsHandler
         private PropertyType _senderProperty;
 
         private List<IValueModifier> _valueModifiers;
-
 
         public EventHandler(PropertyDataMessage message)
         {

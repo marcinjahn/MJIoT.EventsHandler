@@ -1,15 +1,12 @@
 ﻿using MjIot.EventsHandler.Models;
 using System;
-using System.Text;
-
 
 namespace MjIot.EventsHandler
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             Console.WriteLine("Events Handler");
 
             string newMessage = @"{DeviceId: ""7"",

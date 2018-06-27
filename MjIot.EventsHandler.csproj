@@ -119,9 +119,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculation.cs" />
+    <Compile Include="EventHandler.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="IoTHubMessage.cs" />
+    <Compile Include="IoTHubService.cs" />
+    <Compile Include="IValueModifier.cs" />
+    <Compile Include="MessageValidator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDataMessage.cs" />
     <Compile Include="TraceLog.cs" />
+    <Compile Include="ValueFormatConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -131,6 +140,10 @@
     <ProjectReference Include="..\MJIoT_DBModel\MjIot.Storage.Models.EF6Db.csproj">
       <Project>{5eeeef8e-c2a3-4924-a47a-2fa31de6708c}</Project>
       <Name>MjIot.Storage.Models.EF6Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MJIoT_ModelStorage\MjIot.Storage.Models.csproj">
+      <Project>{4D52EB12-BF57-433B-A595-CC8BBDD699C5}</Project>
+      <Name>MjIot.Storage.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -15,8 +15,8 @@ namespace MjIot.EventsHandler
                                 }";
 
             var message = new PropertyDataMessage(newMessage);
-            var handler = new EventHandler(message);
-            handler.HandleMessage().Wait();
+            //var handler = new EventHandler(message);
+            //handler.HandleMessage().Wait();
         }
     }
 }

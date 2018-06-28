@@ -9,39 +9,41 @@ namespace MjIot.EventsHandler.ValueModifiers
             if (value == null)
                 return null;
 
-            string result = value;
-
             var senderPropertyFormat = connection.SenderProperty.Format;
             var listenerPropertyFormat = connection.ListenerProperty.Format;
 
             if (senderPropertyFormat == PropertyFormat.Number)
             {
+                double number = 0;
+                if (!double.TryParse(value.Replace(".", ","), out number))
+                    throw new System.NotSupportedException($"Cannot convert given number ({value})");
+
                 if (listenerPropertyFormat == PropertyFormat.Number)
                 {
-                    return result;
+                    return number.ToString();
                 }
                 else if (listenerPropertyFormat == PropertyFormat.String)
                 {
-                    return result;
+                    return number.ToString();
                 }
                 else if (listenerPropertyFormat == PropertyFormat.Boolean)
                 {
-                    return result;
+                    return number > 0 ? "true" : "false";
                 }
             }
             else if (senderPropertyFormat == PropertyFormat.String)
             {
                 if (listenerPropertyFormat == PropertyFormat.Number)
                 {
-                    float number = 0;
-                    if (float.TryParse(value, out number))
+                    double number = 0;
+                    if (double.TryParse(value.Replace(".", ","), out number))
                         return number.ToString();
                     else
-                        return null;
+                        throw new System.NotSupportedException($"Cannot convert given string ({value}) to number");
                 }
                 else if (listenerPropertyFormat == PropertyFormat.String)
                 {
-                    return result;
+                    return value;
                 }
                 else if (listenerPropertyFormat == PropertyFormat.Boolean)
                 {
@@ -50,31 +52,32 @@ namespace MjIot.EventsHandler.ValueModifiers
                     else if (value.ToLower() == "false" || value.ToLower() == "off")
                         return "false";
                     else
-                        return null;
+                        throw new System.NotSupportedException($"Cannot convert given string ({value}) to boolean");
                 }
             }
             else if (senderPropertyFormat == PropertyFormat.Boolean)
             {
+                if (value != "true" && value != "false")
+                    throw new System.NotSupportedException($"Cannot convert given boolean ({value})");
+
                 if (listenerPropertyFormat == PropertyFormat.Number)
                 {
-                    if (result == "true")
+                    if (value == "true")
                         return "1";
-                    else if (result == "false")
-                        return "0";
                     else
-                        return null;
+                        return "0";
                 }
                 else if (listenerPropertyFormat == PropertyFormat.String)
                 {
-                    return result;
+                    return value;
                 }
                 else if (listenerPropertyFormat == PropertyFormat.Boolean)
                 {
-                    return result;
+                    return value;
                 }
             }
 
-            return null;
+            throw new System.NotSupportedException();
         }
     }
 }

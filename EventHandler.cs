@@ -12,18 +12,25 @@ namespace MjIot.EventsHandler
 {
     public class EventHandler
     {
-        private IoTHubService _iotHubService { get; set; }
+        private IIotService _iotService { get; set; }
         private PropertyDataMessage _message { get; set; }
         private IUnitOfWork _unitOfWork;
+        ILogger _logger;
 
         private Device _senderDevice;
         private PropertyType _senderProperty;
 
         private List<IValueModifier> _valueModifiers;
 
-        public EventHandler(PropertyDataMessage message)
+        public EventHandler(PropertyDataMessage message, IUnitOfWork unitOfWork, IIotService iotService, ILogger logger)
         {
-            _unitOfWork = new UnitOfWork();
+            Log("Event handler creation started");
+
+            if (message == null || unitOfWork == null || iotService == null)
+                throw new ArgumentNullException("EventHandler couldn't be instantiated, because given arguments were NULL.");
+
+            _logger = logger;
+            _unitOfWork = unitOfWork;
             _message = message;
 
             _senderDevice = _unitOfWork.Devices.Get(_message.DeviceId);
@@ -36,18 +43,34 @@ namespace MjIot.EventsHandler
             if (_senderProperty == null)
                 throw new Exception("Sender property not found");
 
-            _iotHubService = new IoTHubService();
+            _iotService = iotService;
             _valueModifiers = new List<IValueModifier> { new Filter(), new Calculation(), new ValueFormatConverter() };
+
+            Log("Event handler successfully created");
         }
 
-        public async Task HandleMessage()
+        public async Task<bool> HandleMessage()
         {
             var isMessageValid = MessageValidator.IsMessageValid(_message, _senderProperty.Format);
             if (!isMessageValid)
-                throw new Exception($"Received value does not match the declared type of sender property! (DeviceId: {_message.DeviceId}, Property: {_message.PropertyName}, Value: {_message.PropertyValue})");
-
+            {
+                Log("Message was not valid. Terminating.");
+                throw new Exception($"Received value does not match the declared type of sender property! (DeviceId: {_message.DeviceId }, Property: {_message.PropertyName }, Value: {_message.PropertyValue })");
+            }
+                
             if (_senderProperty.IsSenderProperty)
+            {
+                Log("Sender property. Notifying listeners");
                 await NotifyListeners();
+                return true;
+            }
+            else
+            {
+                Log("Not a sender property. Execution finished");
+                return false;
+            }
+
+
         }
 
         private async Task NotifyListeners()
@@ -59,6 +82,9 @@ namespace MjIot.EventsHandler
             foreach (var connection in connections)
                 notifyTasks.Add(NotifyListener(connection));
 
+            if (notifyTasks.Count() == 0)
+                Log("There are no listeners. Execution finished");
+
             await Task.WhenAll(notifyTasks);
         }
 
@@ -68,16 +94,19 @@ namespace MjIot.EventsHandler
 
             if (await CheckDeviceOfflineAvailability(deviceType, connection.ListenerDevice.Id))
             {
+                Log($"Online check passed for listener of ID = {connection.ListenerDevice.Id}. Message will be sent.");
                 var message = GetMessageToSend(connection);
-                await _iotHubService.SendToListenerAsync(message);
+                await _iotService.SendToListenerAsync(message);
             }
+            else
+                Log($"Online check failed for listener of ID = {connection.ListenerDevice.Id}. Message will not be sent");
         }
 
         private async Task<bool> CheckDeviceOfflineAvailability(DeviceType listenerDeviceType, int listenerId)
         {
             if (!listenerDeviceType.OfflineMessagesEnabled)
             {
-                if (!(await _iotHubService.IsDeviceOnline(listenerId.ToString())))
+                if (!(await _iotService.IsDeviceOnline(listenerId.ToString())))
                     return false;
             }
 
@@ -88,7 +117,7 @@ namespace MjIot.EventsHandler
         {
             var valueToSend = GetFinalValueToSend(connection, connection.ListenerProperty.Format);
             if (valueToSend == null)
-                throw new ArgumentNullException("Sending was blocked by a filter.");
+                throw new ArgumentNullException("Sending was blocked because value is null.");
 
             return new IotMessage(connection.ListenerDevice.Id.ToString(), connection.ListenerProperty.Name, valueToSend);
         }
@@ -101,5 +130,17 @@ namespace MjIot.EventsHandler
 
             return modifiedValue;
         }
+
+        private void Log(string message)
+        {
+            if (_logger != null)
+                _logger.Log(message);
+        }
+
+    }
+
+    public interface ILogger
+    {
+        void Log(string message);
     }
 }

@@ -11,50 +11,68 @@ namespace MjIot.EventsHandler.ValueModifiers
 
             if (value == null || calculation == null) return null;
 
-            ConnectionCalculation? calculationType = calculation as ConnectionCalculation?;
+            if (calculation == ConnectionCalculation.None)
+                return value;
 
-            if (calculationType == ConnectionCalculation.Addition)
+            double numericValue;
+            var isValueNumeric = double.TryParse(value.Replace('.', ','), out numericValue);
+            double numericCalculationValue;
+            var isCalculationValueNumeric = double.TryParse(calculaionValue?.Replace('.', ','), out numericCalculationValue);
+
+            if (isValueNumeric)
             {
-                return (float.Parse(value) + float.Parse(calculaionValue)).ToString();
+                if ((calculation == ConnectionCalculation.Addition ||
+                    calculation == ConnectionCalculation.Subtraction ||
+                    calculation == ConnectionCalculation.Product ||
+                    calculation == ConnectionCalculation.Division) && !isCalculationValueNumeric)
+                    throw new System.NotSupportedException("Provided value is not numeric, but numeric calculation was requested");
+
+                if (calculation == ConnectionCalculation.Addition)
+                {
+                    return (numericValue + numericCalculationValue).ToString();
+                }
+                else if (calculation == ConnectionCalculation.Subtraction)
+                {
+                    return (numericValue - numericCalculationValue).ToString();
+                }
+                else if (calculation == ConnectionCalculation.Product)
+                {
+                    return (numericValue * numericCalculationValue).ToString();
+                }
+                else if (calculation == ConnectionCalculation.Division)
+                {
+                    if (numericCalculationValue == 0)
+                        throw new System.NotSupportedException("Division by 0 requested.");
+                    return (numericValue / numericCalculationValue).ToString();
+                }
             }
-            else if (calculationType == ConnectionCalculation.Subtraction)
+            
+            if (value == "true" || value == "false")
             {
-                return (float.Parse(value) - float.Parse(calculaionValue)).ToString();
-            }
-            else if (calculationType == ConnectionCalculation.Product)
-            {
-                return (float.Parse(value) * float.Parse(calculaionValue)).ToString();
-            }
-            else if (calculationType == ConnectionCalculation.Division)
-            {
-                if (calculaionValue == "0")
-                    return null;
-                return (float.Parse(value) / float.Parse(calculaionValue)).ToString();
-            }
-            //else if (calculationType == ConnectionCalculation.)
-            //{
-            //    return (float.Parse(value) - float.Parse(modifierValue)).ToString();
-            //}
-            else if (calculationType == ConnectionCalculation.BooleanAnd)
-            {
-                if (value == "false" || calculaionValue == "false")
-                    return "false";
-                else
-                    return "true";
-            }
-            else if (calculationType == ConnectionCalculation.BooleanNot)
-            {
-                return (value == "false") ? "true" : "false";
-            }
-            else if (calculationType == ConnectionCalculation.BooleanOr)
-            {
-                if (value == "true" || calculaionValue == "true")
-                    return "true";
-                else
-                    return "false";
+                if (calculaionValue != "true" && calculaionValue != "false")
+                    throw new System.NotSupportedException("Provided value is not boolean, but boolean calculation was requested");
+
+                if (calculation == ConnectionCalculation.BooleanAnd)
+                {
+                    if (value == "false" || calculaionValue == "false")
+                        return "false";
+                    else
+                        return "true";
+                }
+                else if (calculation == ConnectionCalculation.BooleanNot)
+                {
+                    return (value == "false") ? "true" : "false";
+                }
+                else if (calculation == ConnectionCalculation.BooleanOr)
+                {
+                    if (value == "true" || calculaionValue == "true")
+                        return "true";
+                    else
+                        return "false";
+                }
             }
 
-            return value;
+            throw new System.NotSupportedException();
         }
     }
 }

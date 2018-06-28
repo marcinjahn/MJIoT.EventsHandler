@@ -15,7 +15,7 @@ namespace MjIot.EventsHandler.Services
             }
             else if (propertyFormat == PropertyFormat.Number)
             {
-                if (Double.TryParse(message.PropertyValue, out double result))
+                if (double.TryParse(message.PropertyValue.Replace('.', ','), out double result))
                     return true;
             }
             else if (propertyFormat == PropertyFormat.String)

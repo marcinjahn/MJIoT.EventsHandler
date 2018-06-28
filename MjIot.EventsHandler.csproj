@@ -123,7 +123,7 @@
     <Compile Include="ValueModifiers\Calculation.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="ValueModifiers\Filter.cs" />
-    <Compile Include="Models\IoTHubMessage.cs" />
+    <Compile Include="Models\IotMessage.cs" />
     <Compile Include="Services\IoTHubService.cs" />
     <Compile Include="ValueModifiers\IValueModifier.cs" />
     <Compile Include="Services\MessageValidator.cs" />

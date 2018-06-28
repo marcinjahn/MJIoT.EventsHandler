@@ -13,7 +13,11 @@ namespace MjIot.EventsHandler.ValueModifiers
 
             ConnectionFilter? filterType = filter as ConnectionFilter?;
 
-            if (filterType == ConnectionFilter.Equal)
+            if (filterType == ConnectionFilter.None)
+            {
+                return value;
+            }
+            else if (filterType == ConnectionFilter.Equal)
             {
                 if (value.Equals(filterValue))
                     return value;
@@ -27,40 +31,47 @@ namespace MjIot.EventsHandler.ValueModifiers
                 else
                     return null;
             }
-            else if (filterType == ConnectionFilter.Greater)
+            else
             {
-                if (float.Parse(value) > float.Parse(filterValue))
-                    return value;
-                else
-                    return null;
-            }
-            else if (filterType == ConnectionFilter.GreaterOrEqual)
-            {
-                if (float.Parse(value) >= float.Parse(filterValue))
-                    return value;
-                else
-                    return null;
-            }
-            else if (filterType == ConnectionFilter.Less)
-            {
-                if (float.Parse(value) < float.Parse(filterValue))
-                    return value;
-                else
-                    return null;
-            }
-            else if (filterType == ConnectionFilter.LessOrEqual)
-            {
-                if (float.Parse(value) <= float.Parse(filterValue))
-                    return value;
-                else
-                    return null;
-            }
-            //else if (filterType == ConnectionFilter.None)
-            //{
-            //    return value;
-            //}
+                double numericValue;
+                var isValueNumeric = double.TryParse(value.Replace('.', ','), out numericValue);
+                double numericFilterValue;
+                var isFilterValueNumeric = double.TryParse(filterValue?.Replace('.', ','), out numericFilterValue);
 
-            return value;
+                if (!isValueNumeric || !isFilterValueNumeric)
+                    throw new System.NotSupportedException("Provided value is not numeric, but numeric filter was requested");
+
+                if (filterType == ConnectionFilter.Greater)
+                {
+                    if (numericValue > numericFilterValue)
+                        return value;
+                    else
+                        return null;
+                }
+                else if (filterType == ConnectionFilter.GreaterOrEqual)
+                {
+                    if (numericValue >= numericFilterValue)
+                        return value;
+                    else
+                        return null;
+                }
+                else if (filterType == ConnectionFilter.Less)
+                {
+                    if (numericValue < numericFilterValue)
+                        return value;
+                    else
+                        return null;
+                }
+                else if (filterType == ConnectionFilter.LessOrEqual)
+                {
+                    if (numericValue <= numericFilterValue)
+                        return value;
+                    else
+                        return null;
+                }
+            }
+
+            throw new System.NotSupportedException();
         }
     }
 }

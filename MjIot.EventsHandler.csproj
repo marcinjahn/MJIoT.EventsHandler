@@ -119,17 +119,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILogger.cs" />
     <Compile Include="Services\IIotService.cs" />
     <Compile Include="ValueModifiers\Calculation.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="ValueModifiers\Filter.cs" />
-    <Compile Include="Models\IotMessage.cs" />
+    <Compile Include="Models\MessageForListener.cs" />
     <Compile Include="Services\IoTHubService.cs" />
     <Compile Include="ValueModifiers\IValueModifier.cs" />
     <Compile Include="Services\MessageValidator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\PropertyDataMessage.cs" />
+    <Compile Include="Models\IncomingMessage.cs" />
     <Compile Include="TraceLog.cs" />
     <Compile Include="ValueModifiers\ValueFormatConverter.cs" />
   </ItemGroup>

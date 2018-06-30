@@ -16,7 +16,7 @@ namespace MjIot.EventsHandler.Services
             ServiceClient = Microsoft.Azure.Devices.ServiceClient.CreateFromConnectionString(ConnectionString);
         }
 
-        public async Task SendToListenerAsync(IotMessage message)
+        public async Task SendToListenerAsync(MessageForListener message)
         {
             var messageString = GenerateC2DMessage(message.PropertyName, message.PropertyValue);
             await SendC2DMessageAsync(message.ReceiverId, messageString);

@@ -6,7 +6,7 @@ namespace MjIot.EventsHandler.Services
 {
     public interface IIotService
     {
-        Task SendToListenerAsync(IotMessage message);
+        Task SendToListenerAsync(MessageForListener message);
 
         Task<Boolean> IsDeviceOnline(string deviceId);
     }

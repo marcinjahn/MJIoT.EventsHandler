@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace MjIot.EventsHandler.Models
 {
-    public class IotMessage
+    public class MessageForListener
     {
-        public IotMessage(string receiverId, string propertyName, string value)
+        public MessageForListener(string receiverId, string propertyName, string value)
         {
             ReceiverId = receiverId;
             PropertyName = propertyName;
@@ -21,10 +21,10 @@ namespace MjIot.EventsHandler.Models
             if (other == null)
                 return false;
 
-            IotMessage castedOther;
+            MessageForListener castedOther;
             try
             {
-                castedOther = (IotMessage)other;
+                castedOther = (MessageForListener)other;
             }
             catch (Exception)
             {

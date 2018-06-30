@@ -6,7 +6,7 @@ namespace MjIot.EventsHandler.Services
 {
     public static class MessageValidator
     {
-        public static bool IsMessageValid(PropertyDataMessage message, PropertyFormat propertyFormat)
+        public static bool IsMessageValid(IncomingMessage message, PropertyFormat propertyFormat)
         {
             if (propertyFormat == PropertyFormat.Boolean)
             {

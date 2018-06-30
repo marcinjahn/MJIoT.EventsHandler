@@ -3,18 +3,18 @@ using System;
 
 namespace MjIot.EventsHandler.Models
 {
-    public class PropertyDataMessage
+    public class IncomingMessage
     {
-        public PropertyDataMessage()
+        public IncomingMessage()
         {
         }
 
-        public PropertyDataMessage(string message)
+        public IncomingMessage(string message)
         {
-            PropertyDataMessage msg;
+            IncomingMessage msg;
             try
             {
-                msg = JsonConvert.DeserializeObject<PropertyDataMessage>(message as string);
+                msg = JsonConvert.DeserializeObject<IncomingMessage>(message as string);
             }
             catch(Exception e)
             {
@@ -26,7 +26,7 @@ namespace MjIot.EventsHandler.Models
             PropertyValue = msg.PropertyValue;
         }
 
-        public PropertyDataMessage(int deviceId, string propertyName, string propertyValue)
+        public IncomingMessage(int deviceId, string propertyName, string propertyValue)
         {
             if (propertyName == null || propertyValue == null)
                 throw new ArgumentNullException($"ArgumentNullException thrown while creating PropertyDataMessage object.");

@@ -7,9 +7,9 @@ namespace MjIot.EventsHandler.ValueModifiers
         public string Modify(string value, Connection connection)
         {
             var calculation = connection.Calculation;
-            var calculaionValue = connection.CalculationValue;
+            var calculationValue = connection.CalculationValue;
 
-            if (value == null || calculation == null) return null;
+            if (value == null) return null;
 
             if (calculation == ConnectionCalculation.None)
                 return value;
@@ -17,7 +17,7 @@ namespace MjIot.EventsHandler.ValueModifiers
             double numericValue;
             var isValueNumeric = double.TryParse(value.Replace('.', ','), out numericValue);
             double numericCalculationValue;
-            var isCalculationValueNumeric = double.TryParse(calculaionValue?.Replace('.', ','), out numericCalculationValue);
+            var isCalculationValueNumeric = double.TryParse(calculationValue?.Replace('.', ','), out numericCalculationValue);
 
             if (isValueNumeric)
             {
@@ -49,23 +49,24 @@ namespace MjIot.EventsHandler.ValueModifiers
             
             if (value == "true" || value == "false")
             {
-                if (calculaionValue != "true" && calculaionValue != "false")
-                    throw new System.NotSupportedException("Provided value is not boolean, but boolean calculation was requested");
+                if (calculation != ConnectionCalculation.BooleanNot && calculationValue != "true" && calculationValue != "false")
+                    throw new System.NotSupportedException("Boolean calculation cannot be done with provided calculationValue");
 
-                if (calculation == ConnectionCalculation.BooleanAnd)
+                if (calculation == ConnectionCalculation.BooleanNot)
                 {
-                    if (value == "false" || calculaionValue == "false")
+                    return (value == "false") ? "true" : "false";
+                }
+                else if (calculation == ConnectionCalculation.BooleanAnd)
+                {
+                    if (value == "false" || calculationValue == "false")
                         return "false";
                     else
                         return "true";
                 }
-                else if (calculation == ConnectionCalculation.BooleanNot)
-                {
-                    return (value == "false") ? "true" : "false";
-                }
+
                 else if (calculation == ConnectionCalculation.BooleanOr)
                 {
-                    if (value == "true" || calculaionValue == "true")
+                    if (value == "true" || calculationValue == "true")
                         return "true";
                     else
                         return "false";

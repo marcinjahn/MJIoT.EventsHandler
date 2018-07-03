@@ -9,7 +9,7 @@ namespace MjIot.EventsHandler.ValueModifiers
             var filter = connection.Filter;
             var filterValue = connection.FilterValue;
 
-            if (value == null || filter == null) return null;
+            if (value == null) return null;
 
             ConnectionFilter? filterType = filter as ConnectionFilter?;
 

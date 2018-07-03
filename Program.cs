@@ -1,4 +1,6 @@
 ﻿using MjIot.EventsHandler.Models;
+using MjIot.EventsHandler.Services;
+using MJIot.Storage.Models;
 using System;
 
 namespace MjIot.EventsHandler
@@ -10,13 +12,13 @@ namespace MjIot.EventsHandler
             Console.WriteLine("Events Handler");
 
             string newMessage = @"{DeviceId: ""7"",
-                                PropertyName: ""SimulatedSwitchState"",
+                                PropertyName: ""Switch State"",
                                 PropertyValue: ""false""
                                 }";
 
             var message = new IncomingMessage(newMessage);
-            //var handler = new EventHandler(message);
-            //handler.HandleMessage().Wait();
+            var handler = new EventHandler(message, new UnitOfWork(), new IoTHubService(), null);
+            handler.HandleMessage().Wait();
         }
     }
 }

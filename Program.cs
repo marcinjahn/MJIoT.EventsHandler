@@ -11,9 +11,9 @@ namespace MjIot.EventsHandler
         {
             Console.WriteLine("Events Handler");
 
-            string newMessage = @"{DeviceId: ""7"",
-                                PropertyName: ""Switch State"",
-                                PropertyValue: ""false""
+            string newMessage = @"{DeviceId: ""41"",
+                                PropertyName: ""Potentiometer Value"",
+                                PropertyValue: ""1024""
                                 }";
 
             var message = new IncomingMessage(newMessage);

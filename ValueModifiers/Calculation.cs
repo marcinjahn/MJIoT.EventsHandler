@@ -6,12 +6,12 @@ namespace MjIot.EventsHandler.ValueModifiers
     {
         public string Modify(string value, Connection connection)
         {
-            var calculation = connection.Calculation;
+            var calculationType = connection.Calculation;
             var calculationValue = connection.CalculationValue;
 
             if (value == null) return null;
 
-            if (calculation == ConnectionCalculation.None)
+            if (calculationType == ConnectionCalculation.None)
                 return value;
 
             double numericValue;
@@ -21,25 +21,25 @@ namespace MjIot.EventsHandler.ValueModifiers
 
             if (isValueNumeric)
             {
-                if ((calculation == ConnectionCalculation.Addition ||
-                    calculation == ConnectionCalculation.Subtraction ||
-                    calculation == ConnectionCalculation.Product ||
-                    calculation == ConnectionCalculation.Division) && !isCalculationValueNumeric)
+                if ((calculationType == ConnectionCalculation.Addition ||
+                    calculationType == ConnectionCalculation.Subtraction ||
+                    calculationType == ConnectionCalculation.Product ||
+                    calculationType == ConnectionCalculation.Division) && !isCalculationValueNumeric)
                     throw new System.NotSupportedException("Provided value is not numeric, but numeric calculation was requested");
 
-                if (calculation == ConnectionCalculation.Addition)
+                if (calculationType == ConnectionCalculation.Addition)
                 {
                     return (numericValue + numericCalculationValue).ToString();
                 }
-                else if (calculation == ConnectionCalculation.Subtraction)
+                else if (calculationType == ConnectionCalculation.Subtraction)
                 {
                     return (numericValue - numericCalculationValue).ToString();
                 }
-                else if (calculation == ConnectionCalculation.Product)
+                else if (calculationType == ConnectionCalculation.Product)
                 {
                     return (numericValue * numericCalculationValue).ToString();
                 }
-                else if (calculation == ConnectionCalculation.Division)
+                else if (calculationType == ConnectionCalculation.Division)
                 {
                     if (numericCalculationValue == 0)
                         throw new System.NotSupportedException("Division by 0 requested.");
@@ -49,14 +49,14 @@ namespace MjIot.EventsHandler.ValueModifiers
             
             if (value == "true" || value == "false")
             {
-                if (calculation != ConnectionCalculation.BooleanNot && calculationValue != "true" && calculationValue != "false")
+                if (calculationType != ConnectionCalculation.BooleanNot && calculationValue != "true" && calculationValue != "false")
                     throw new System.NotSupportedException("Boolean calculation cannot be done with provided calculationValue");
 
-                if (calculation == ConnectionCalculation.BooleanNot)
+                if (calculationType == ConnectionCalculation.BooleanNot)
                 {
                     return (value == "false") ? "true" : "false";
                 }
-                else if (calculation == ConnectionCalculation.BooleanAnd)
+                else if (calculationType == ConnectionCalculation.BooleanAnd)
                 {
                     if (value == "false" || calculationValue == "false")
                         return "false";
@@ -64,7 +64,7 @@ namespace MjIot.EventsHandler.ValueModifiers
                         return "true";
                 }
 
-                else if (calculation == ConnectionCalculation.BooleanOr)
+                else if (calculationType == ConnectionCalculation.BooleanOr)
                 {
                     if (value == "true" || calculationValue == "true")
                         return "true";

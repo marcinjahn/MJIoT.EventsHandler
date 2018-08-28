@@ -36,6 +36,8 @@ namespace MjIot.EventsHandler.ValueModifiers
 
             return task.Result.ToString();
         }
+
+        //this method works well only on local machine
         async Task<string> GetResult(object input, string calculation)
         {
             var task = CSharpScript.EvaluateAsync(

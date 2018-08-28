@@ -10,7 +10,7 @@ namespace MjIot.EventsHandler.Services
         {
             if (propertyFormat == PropertyFormat.Boolean)
             {
-                if (message.PropertyValue == "true" || message.PropertyValue == "false")
+                if (message.PropertyValue.ToLower() == "true" || message.PropertyValue.ToLower() == "false")
                     return true;
             }
             else if (propertyFormat == PropertyFormat.Number)

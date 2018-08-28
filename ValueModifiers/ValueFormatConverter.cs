@@ -57,23 +57,23 @@ namespace MjIot.EventsHandler.ValueModifiers
             }
             else if (senderPropertyFormat == PropertyFormat.Boolean)
             {
-                if (value != "true" && value != "false")
+                if (value.ToLower() != "true" && value.ToLower() != "false")
                     throw new System.NotSupportedException($"Cannot convert given boolean ({value})");
 
                 if (listenerPropertyFormat == PropertyFormat.Number)
                 {
-                    if (value == "true")
+                    if (value.ToLower() == "true")
                         return "1";
                     else
                         return "0";
                 }
                 else if (listenerPropertyFormat == PropertyFormat.String)
                 {
-                    return value;
+                    return value.ToLower();
                 }
                 else if (listenerPropertyFormat == PropertyFormat.Boolean)
                 {
-                    return value;
+                    return value.ToLower();
                 }
             }
 

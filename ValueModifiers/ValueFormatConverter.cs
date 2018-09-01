@@ -57,6 +57,11 @@ namespace MjIot.EventsHandler.ValueModifiers
             }
             else if (senderPropertyFormat == PropertyFormat.Boolean)
             {
+                if (listenerPropertyFormat == PropertyFormat.Number && float.TryParse(value, out float _))
+                {
+                    return value;
+                }
+
                 if (value.ToLower() != "true" && value.ToLower() != "false")
                     throw new System.NotSupportedException($"Cannot convert given boolean ({value})");
 

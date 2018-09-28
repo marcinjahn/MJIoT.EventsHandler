@@ -11,14 +11,21 @@ namespace MjIot.EventsHandler
         {
             Console.WriteLine("Events Handler");
 
-            string newMessage = @"{DeviceId: ""19"",
-                                PropertyName: ""Sent Message"",
-                                PropertyValue: ""MyTest""
-                                }";
+            string newMessage = @"{""DeviceId"":""45"",""PropertyName"":""Output"",""PropertyValue"":""True""}";
 
             var message = new IncomingMessage(newMessage);
-            var handler = new EventHandler(message, new UnitOfWork(), new IoTHubService(), null);
+            var handler = new EventHandler(message, new UnitOfWork(), new IoTHubService(), new ConsoleLogger());
             handler.HandleMessage().Wait();
+
+            Console.ReadLine();
+        }
+    }
+
+    public class ConsoleLogger : ILogger
+    {
+        public void Log(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }

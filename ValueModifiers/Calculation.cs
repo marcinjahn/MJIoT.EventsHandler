@@ -1,5 +1,7 @@
 ﻿using MjIot.Storage.Models.EF6Db;
 using System;
+using System.Globalization;
+using System.Threading;
 
 namespace MjIot.EventsHandler.ValueModifiers
 {
@@ -10,6 +12,7 @@ namespace MjIot.EventsHandler.ValueModifiers
         public Calculation()
         {
             _generator = new ValueInfoGenerator();
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
         }
 
         private void ThrowExceptionIfNotNumeric(ValueInfo valueInfo)

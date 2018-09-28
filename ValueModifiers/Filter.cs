@@ -1,9 +1,15 @@
 ﻿using MjIot.Storage.Models.EF6Db;
+using System.Globalization;
+using System.Threading;
 
 namespace MjIot.EventsHandler.ValueModifiers
 {
     public class Filter : IValueModifier
     {
+        public Filter()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        }
         public string Modify(string value, Connection connection)
         {
             var filterType = connection.Filter;
@@ -32,9 +38,9 @@ namespace MjIot.EventsHandler.ValueModifiers
             else
             {
                 double numericValue;
-                var isValueNumeric = double.TryParse(value.Replace('.', ','), out numericValue);
+                var isValueNumeric = double.TryParse(value.Replace(',', '.'), out numericValue);
                 double numericFilterValue;
-                var isFilterValueNumeric = double.TryParse(filterValue?.Replace('.', ','), out numericFilterValue);
+                var isFilterValueNumeric = double.TryParse(filterValue?.Replace(',', '.'), out numericFilterValue);
 
                 if (!isValueNumeric || !isFilterValueNumeric)
                     throw new System.NotSupportedException("Provided value is not numeric, but numeric filter was requested");

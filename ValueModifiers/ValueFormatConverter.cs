@@ -1,9 +1,16 @@
 ﻿using MjIot.Storage.Models.EF6Db;
+using System.Globalization;
+using System.Threading;
 
 namespace MjIot.EventsHandler.ValueModifiers
 {
     public class ValueFormatConverter : IValueModifier
     {
+        public ValueFormatConverter()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
         public string Modify(string value, Connection connection)
         {
             if (value == null)
@@ -15,7 +22,7 @@ namespace MjIot.EventsHandler.ValueModifiers
             if (senderPropertyFormat == PropertyFormat.Number)
             {
                 double number = 0;
-                if (!double.TryParse(value.Replace(".", ","), out number))
+                if (!double.TryParse(value.Replace(",", "."), out number))
                     throw new System.NotSupportedException($"Cannot convert given number ({value})");
 
                 if (listenerPropertyFormat == PropertyFormat.Number)
@@ -36,7 +43,7 @@ namespace MjIot.EventsHandler.ValueModifiers
                 if (listenerPropertyFormat == PropertyFormat.Number)
                 {
                     double number = 0;
-                    if (double.TryParse(value.Replace(".", ","), out number))
+                    if (double.TryParse(value.Replace(",", "."), out number))
                         return number.ToString();
                     else
                         throw new System.NotSupportedException($"Cannot convert given string ({value}) to number");

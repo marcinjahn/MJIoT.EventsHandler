@@ -36,13 +36,13 @@ namespace MjIot.EventsHandler.ValueModifiers
 
         public bool IsValueNumeric(string value)
         {
-            var result = double.TryParse(value.Replace('.', ','), out double numericValue);
+            var result = double.TryParse(value.Replace(',', '.'), out double numericValue);
             return result;
         }
 
         public double GetNumericValue(string value)
         {
-            var result = double.TryParse(value.Replace('.', ','), out double numericValue);
+            var result = double.TryParse(value.Replace(',', '.'), out double numericValue);
             if (result)
                 return numericValue;
             else

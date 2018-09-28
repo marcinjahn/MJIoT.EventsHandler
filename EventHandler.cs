@@ -5,7 +5,9 @@ using MjIot.Storage.Models.EF6Db;
 using MJIot.Storage.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MjIot.EventsHandler
@@ -24,6 +26,8 @@ namespace MjIot.EventsHandler
 
         public EventHandler(IncomingMessage message, IUnitOfWork unitOfWork, IIotService iotService, ILogger logger)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+
             _logger = logger;
             Log("Event handler creation started");
 
@@ -50,7 +54,6 @@ namespace MjIot.EventsHandler
                 throw new Exception("Sender property not found");
             }
 
-
             _iotService = iotService;
             _valueModifiers = new List<IValueModifier> { new Filter(), new Calculation(), new ValueFormatConverter() };
 
@@ -65,7 +68,7 @@ namespace MjIot.EventsHandler
                 Log("Message was not valid. Terminating.");
                 throw new Exception($"Received value does not match the declared type of sender property! (DeviceId: {_message.DeviceId }, Property: {_message.PropertyName }, Value: {_message.PropertyValue })");
             }
-                
+            
             if (_senderProperty.IsSenderProperty)
             {
                 //Log("Sender property. Notifying listeners");
@@ -83,7 +86,8 @@ namespace MjIot.EventsHandler
 
         private async Task NotifyListeners()
         {
-            var connections = _unitOfWork.Connections.GetDeviceConnections(_senderDevice);
+            var connections = _unitOfWork.Connections.GetDeviceConnections(_senderDevice)
+                .Where(n => n.SenderProperty.Name == _senderProperty.Name);
 
             var notifyTasks = new List<Task>();
 
